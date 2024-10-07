@@ -20,7 +20,7 @@ public class LoginServiceImpl implements LoginService{
 
 	@Override
     public Login authenticate(String email, String password) {
-        Login login = loginRepository.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("Email "+email+"not found"));
+        Login login = loginRepository.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("Email "+email+" not found"));
         if (login != null && passwordEncoder.matches(password, login.getPassword())) {
             return login; // Return login object if credentials match
         }

@@ -25,5 +25,4 @@ public class PaymentDetailController {
         return paymentDetailService.savePayment(paymentDetail);
     }
 
-    // Additional endpoints as required
 }

@@ -37,16 +37,5 @@ public class LoanType {
 
     @Column(nullable = false)
     private Integer durationYears;
-    
- // Override toString to prevent recursive calls
-//    @Override
-//    public String toString() {
-//        return "LoanType{" +
-//                "loanTypeId='" + loanTypeId + '\'' +
-//                ", loanName='" + loanName + '\'' +
-//                ", interestRate=" + interestRate +
-//                ", maxAmount=" + maxAmount +
-//                ", durationYears=" + durationYears +
-//                '}';
-//    }
+   
 }
