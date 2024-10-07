@@ -1,5 +1,7 @@
 package com.crimsonlogic.bankloanmanagementsystem.serviceimpl;
 
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,5 +31,30 @@ public class LoanTypeServiceImpl implements LoanTypeService {
     @Override
     public LoanType getLoanTypeById(String loanId) {
     	return loanTypeRepository.findById(loanId).orElseThrow(()->new ResourceNotFoundException("Loan type with id " + loanId+ " not found"));
+    }
+    
+    @Override
+    public List<LoanType> getLoanTypesByBank(Bank bank) {
+        return loanTypeRepository.findByBank(bank);
+    }
+
+    @Override
+    public void deleteLoanTypeById(String loanTypeId) {
+    	loanTypeRepository.deleteById(loanTypeId);
+    }
+    
+ // Method for editing a loan type
+    @Override
+    public void editLoanType(String loanTypeId, LoanTypeDTO loanTypeDTO) {
+    	System.err.println("Service");
+        // Find the loan type to edit
+        LoanType existingLoanType = loanTypeRepository.findById(loanTypeId).orElseThrow(() ->
+                new ResourceNotFoundException("Loan type with id " + loanTypeId + " not found"));
+
+        // Map the updated values from DTO
+        modelMapper.map(loanTypeDTO, existingLoanType);
+        
+        // Save the updated loan type
+        loanTypeRepository.save(existingLoanType);
     }
 }

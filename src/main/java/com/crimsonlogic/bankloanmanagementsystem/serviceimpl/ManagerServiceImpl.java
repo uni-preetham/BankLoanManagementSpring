@@ -1,5 +1,7 @@
 package com.crimsonlogic.bankloanmanagementsystem.serviceimpl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -76,6 +78,16 @@ public class ManagerServiceImpl implements ManagerService {
         // Save the updated manager
         managerRepository.save(manager);
         return manager;
+    }
+    
+    @Override
+    public List<Manager> getAllManagers(){
+    	return managerRepository.findAll();
+    }
+
+    @Override
+    public void deleteManagerById(String managerId) {
+    	managerRepository.deleteById(managerId);
     }
 
 }

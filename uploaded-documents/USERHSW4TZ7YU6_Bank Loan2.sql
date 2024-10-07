@@ -9,6 +9,10 @@ select * from loan_requests;
 select * from address;
 select * from occupation;
 select * from account;
+select * from payment_details;
+select * from account_payment_schedule;
+
+update users set credit_score=800 where first_name='Preetham';
 
 
 SELECT * FROM loan_requests lr

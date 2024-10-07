@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -24,7 +25,7 @@ import com.crimsonlogic.bankloanmanagementsystem.service.ManagerService;
 
 import jakarta.servlet.http.HttpSession;
 
-@CrossOrigin(origins = "http://localhost:3000/", allowCredentials = "true") // adjust the React frontend URL
+@CrossOrigin(origins = "http://localhost:3000/", allowCredentials = "true", allowedHeaders = "*") // adjust the React frontend URL
 @RestController
 @RequestMapping("/api/manager")
 public class ManagerController {
@@ -94,5 +95,26 @@ public class ManagerController {
         return ResponseEntity.ok("Loan request rejected");
     }
 
+    
+    // Fetch all managers
+    @GetMapping("/getallmanagers")
+    public ResponseEntity<List<Manager>> getAllManagers() {
+        List<Manager> managers = managerService.getAllManagers();
+        if (managers.isEmpty()) {
+            return ResponseEntity.noContent().build();  // Return 204 No Content if no managers found
+        }
+        return ResponseEntity.ok(managers);  // Return the list of managers with 200 OK
+    }
+
+    // Delete (disable) a manager by ID
+    @DeleteMapping("deletemanager/{managerId}")
+    public ResponseEntity<Void> deleteManagerById(@PathVariable String managerId) {
+        try {
+            managerService.deleteManagerById(managerId);  // Call the service to delete the manager
+            return ResponseEntity.noContent().build();    // Return 204 No Content after deletion
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();     // Return 404 Not Found if the manager ID does not exist
+        }
+    }
 
 }

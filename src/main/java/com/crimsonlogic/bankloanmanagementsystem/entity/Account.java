@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import com.crimsonlogic.bankloanmanagementsystem.util.IdGenerator;
 
@@ -13,8 +14,6 @@ import com.crimsonlogic.bankloanmanagementsystem.util.IdGenerator;
 @Entity
 @Table(name = "account")
 public class Account {
-
-	
 
 	public Account(User user, Bank bank, LoanType loanType, Double approvedAmount, LocalDate approvalDate,
 			Double interestRate, Integer durationYears) {
@@ -30,11 +29,11 @@ public class Account {
 
 	@Id
 	private String accountId;
-	
+
 	@PrePersist
-    public void generateId() {
-        this.accountId = IdGenerator.generateId("ACC");
-    }
+	public void generateId() {
+		this.accountId = IdGenerator.generateId("ACC");
+	}
 
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
@@ -55,4 +54,10 @@ public class Account {
 	private Double interestRate;
 
 	private Integer durationYears;
+
+	private Double emiAmount; // Store EMI amount
+	private Double totalPayment; // Store total payment over the loan tenure
+
+	@ElementCollection
+	private List<PaymentDetail> paymentSchedule; // Store payment schedule details
 }

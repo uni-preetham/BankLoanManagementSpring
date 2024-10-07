@@ -10,4 +10,8 @@ public interface AccountService {
 
 	List<Account> getAccountsByUser(String userId);
 
+	Account getAccountById(String accountId);
+
+//	List<Account> getAccountsByUserId(String userId);
+
 }

@@ -62,7 +62,7 @@ public class LoanRequestController {
 //            @RequestParam("occupationType") String occupationType,
 //            @RequestParam("occupationName") String occupationName,
 //            @RequestParam("companyName") String companyName,
-//            @RequestParam("salary") double salary,
+            @RequestParam("salary") double salary,
             @RequestParam("document") MultipartFile document) {
 
         try {
@@ -76,12 +76,10 @@ public class LoanRequestController {
                 return new ResponseEntity<>("You're not eligible to apply for a loan due to low credit score.", HttpStatus.FORBIDDEN);
             }
 
-//            if (salary < 50000) {
-//                return new ResponseEntity<>("You're not eligible to apply for a loan due to insufficient salary.", HttpStatus.FORBIDDEN);
-//            }
 
             // Find the LoanType by loanTypeId
             LoanType loanType = loanTypeService.getLoanTypeById(loanTypeId);
+            System.out.println(loanType);
             if (loanType == null) {
                 throw new ResourceNotFoundException("Loan Type not found with ID: " + loanTypeId);
             }

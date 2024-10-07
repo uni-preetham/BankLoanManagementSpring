@@ -2,11 +2,13 @@ package com.crimsonlogic.bankloanmanagementsystem.controller;
 
 import com.crimsonlogic.bankloanmanagementsystem.dto.BankResponseDto;
 import com.crimsonlogic.bankloanmanagementsystem.dto.LoanRequestDTO;
+import com.crimsonlogic.bankloanmanagementsystem.dto.RevenueDTO;
 import com.crimsonlogic.bankloanmanagementsystem.entity.Bank;
 import com.crimsonlogic.bankloanmanagementsystem.entity.LoanRequest;
 import com.crimsonlogic.bankloanmanagementsystem.exception.ResourceNotFoundException;
 import com.crimsonlogic.bankloanmanagementsystem.service.BankService;
 import com.crimsonlogic.bankloanmanagementsystem.service.LoanRequestService;
+import com.crimsonlogic.bankloanmanagementsystem.service.PaymentDetailService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -34,6 +36,9 @@ public class BankController {
     @Autowired
     private LoanRequestService loanRequestService;
 
+    @Autowired
+    private PaymentDetailService paymentService;
+
     @GetMapping("/with-loans")
     public List<BankResponseDto> getBanksWithLoans() {
         return bankService.findAllBanksWithLoans(); // Call the modified service method
@@ -54,14 +59,17 @@ public class BankController {
     
     @PutMapping("/approve/{loanRequestId}")
     public ResponseEntity<String> approveLoanRequest(@PathVariable String loanRequestId, @RequestParam("status") String status) {
-        try {
-            LoanRequest updatedLoanRequest = loanRequestService.approveLoanRequest(loanRequestId, status);
-            return new ResponseEntity<>("Loan request " + updatedLoanRequest.getStatus().toLowerCase() + " by bank", HttpStatus.OK);
-        } catch (ResourceNotFoundException ex) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception ex) {
-            return new ResponseEntity<>("Error approving loan request: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    	LoanRequest updatedLoanRequest = loanRequestService.approveLoanRequest(loanRequestId, status);
+    	return new ResponseEntity<>("Loan request " + updatedLoanRequest.getStatus().toLowerCase() + " by bank", HttpStatus.OK);
+//        try {
+//            System.err.println("Called");
+//        } catch (ResourceNotFoundException ex) {
+//        	System.err.println("Called2");
+//            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+//        } catch (Exception ex) {
+//        	System.err.println("Called3");
+//            return new ResponseEntity<>("Error approving loan request: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
 
     
@@ -76,6 +84,19 @@ public class BankController {
     public ResponseEntity<String> updateLoanStatus(@PathVariable String requestId, @RequestParam String status) {
         loanRequestService.updateLoanRequestStatus(requestId, status);
         return new ResponseEntity<>("Loan request status updated successfully", HttpStatus.OK);
+    }
+    
+    @GetMapping("/monthly")
+    public ResponseEntity<List<RevenueDTO>> getMonthlyRevenue(HttpSession session) {
+        Bank bank = (Bank) session.getAttribute("bank");
+        if (bank == null) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        }
+        
+        // Fetch revenue data specific to the bank
+        List<RevenueDTO> revenueData = paymentService.getMonthlyRevenueByBank(bank.getBankId());
+        System.err.println("Controller trig");
+        return ResponseEntity.ok(revenueData);
     }
     
 }
