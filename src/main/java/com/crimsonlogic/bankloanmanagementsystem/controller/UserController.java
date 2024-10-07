@@ -4,6 +4,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.crimsonlogic.bankloanmanagementsystem.dto.PasswordChangeRequest;
 import com.crimsonlogic.bankloanmanagementsystem.dto.UserRegistrationDTO;
 import com.crimsonlogic.bankloanmanagementsystem.entity.User;
 import com.crimsonlogic.bankloanmanagementsystem.service.UserService;
@@ -64,4 +67,20 @@ public class UserController {
 	    }
 	    return ResponseEntity.ok("Logout successful");
 	}
+	
+	
+	@PostMapping("/changepassword")
+	public ResponseEntity<?> changePassword(@RequestBody PasswordChangeRequest request) {
+	    String userId = request.getUserId(); // Get userId from the request body
+	    try {
+	        userService.changePassword(userId, request.getCurrentPassword(), request.getNewPassword());
+	        return ResponseEntity.ok("Password updated successfully");
+	    } catch (IllegalArgumentException e) {
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+	    } catch (RuntimeException e) {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+	    }
+	}
+
+
 }

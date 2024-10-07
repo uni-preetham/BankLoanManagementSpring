@@ -3,6 +3,7 @@ package com.crimsonlogic.bankloanmanagementsystem.serviceimpl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.crimsonlogic.bankloanmanagementsystem.dto.ManagerDTO;
@@ -27,6 +28,9 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Autowired
     private ManagerRepository managerRepository;
+    
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder; 
 
     @Override
     public void registerManager(ManagerRegistrationDTO managerDTO, Bank bank) {
@@ -42,7 +46,7 @@ public class ManagerServiceImpl implements ManagerService {
     private Login createLogin(ManagerRegistrationDTO managerDTO) {
         Login login = new Login();
         login.setEmail(managerDTO.getEmail());
-        login.setPassword(managerDTO.getPassword()); // Ensure password encoding
+        login.setPassword(passwordEncoder.encode(managerDTO.getPassword())); // Encode password
         Role managerRole = roleRepository.findByRoleName("MANAGER");
         login.setRole(managerRole);
         return login;

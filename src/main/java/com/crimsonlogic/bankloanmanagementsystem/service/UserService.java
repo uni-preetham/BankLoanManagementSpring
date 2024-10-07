@@ -17,4 +17,6 @@ public interface UserService {
 
 	void saveUser(User user);
 
+	void changePassword(String userId, String currentPassword, String newPassword);
+
 }

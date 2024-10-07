@@ -1,5 +1,6 @@
 package com.crimsonlogic.bankloanmanagementsystem.serviceimpl;
 
+import com.crimsonlogic.bankloanmanagementsystem.dto.PasswordChangeRequest;
 import com.crimsonlogic.bankloanmanagementsystem.dto.UserRegistrationDTO;
 import com.crimsonlogic.bankloanmanagementsystem.entity.Login;
 import com.crimsonlogic.bankloanmanagementsystem.entity.Role;
@@ -12,6 +13,9 @@ import com.crimsonlogic.bankloanmanagementsystem.repository.UserRepository;
 import com.crimsonlogic.bankloanmanagementsystem.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,6 +29,11 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+    
+
     
     @Override
     public void saveUser(User user) {
@@ -44,7 +53,8 @@ public class UserServiceImpl implements UserService {
         // Create Login entity
         Login login = new Login();
         login.setEmail(registrationDTO.getEmail());
-        login.setPassword(registrationDTO.getPassword());
+        String encryptedPassword = passwordEncoder.encode(registrationDTO.getPassword());
+        login.setPassword(encryptedPassword);
         login.setRole(role);
         loginRepository.save(login);
         
@@ -99,6 +109,19 @@ public class UserServiceImpl implements UserService {
     @Override 
     public User getUser(String userId) {
     	return userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User with userid "+userId+" not found"));
+    }
+    
+    @Override
+    public void changePassword(String userId, String currentPassword, String newPassword) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+        if (!passwordEncoder.matches(currentPassword, user.getLogin().getPassword())) {
+            throw new IllegalArgumentException("Current password is incorrect");
+        }
+
+        user.getLogin().setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
     }
     
    
