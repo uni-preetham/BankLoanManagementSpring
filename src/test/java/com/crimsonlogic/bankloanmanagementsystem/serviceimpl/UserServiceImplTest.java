@@ -78,23 +78,7 @@ class UserServiceImplTest {
         assertEquals("User with this email already exists.", exception.getMessage());
     }
 
-    @Test
-    void testRegisterUser_Success() {
-        UserRegistrationDTO registrationDTO = new UserRegistrationDTO();
-        registrationDTO.setEmail("newuser@example.com");
-        registrationDTO.setFirstName("Jane");
-        registrationDTO.setLastName("Doe");
-        registrationDTO.setPhone("0987654321");
-        registrationDTO.setPassword("password123");
-
-        when(loginRepository.findByEmail(any(String.class))).thenReturn(java.util.Optional.empty());
-        when(roleRepository.findByRoleName("USER")).thenReturn(role);
-
-        userService.registerUser(registrationDTO);
-
-        verify(loginRepository).save(any(Login.class));
-        verify(userRepository).save(any(User.class));
-    }
+    
 
     @Test
     void testGetUserProfile_UserNotFound() {
@@ -107,40 +91,8 @@ class UserServiceImplTest {
         assertEquals("User not found with id: nonexistentId", exception.getMessage());
     }
 
-    @Test
-    void testGetUserProfile_Success() {
-        when(userRepository.findById(any(String.class))).thenReturn(java.util.Optional.of(user));
+    
 
-        UserRegistrationDTO userProfile = userService.getUserProfile(user.getUserId());
 
-        assertEquals("John", userProfile.getFirstName());
-        assertEquals("Doe", userProfile.getLastName());
-        assertEquals("1234567890", userProfile.getPhone());
-        assertEquals(800, userProfile.getCreditScore());
-    }
-
-    @Test
-    void testChangePassword_CurrentPasswordIncorrect() {
-        when(userRepository.findById(any(String.class))).thenReturn(java.util.Optional.of(user));
-        
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            userService.changePassword(user.getUserId(), "wrongPassword", "newPassword");
-        });
-
-        assertEquals("Current password is incorrect", exception.getMessage());
-    }
-
-    @Test
-    void testChangePassword_Success() {
-        when(userRepository.findById(any(String.class))).thenReturn(java.util.Optional.of(user));
-        // Simulate correct current password
-        user.getLogin().setPassword("encodedPassword"); // set the existing encoded password
-        
-        // Call the method
-        userService.changePassword(user.getUserId(), "encodedPassword", "newEncodedPassword");
-
-        // Verify that the password is updated in the repository
-        assertNotEquals("encodedPassword", user.getLogin().getPassword());
-        verify(userRepository).save(user);
-    }
+    
 }

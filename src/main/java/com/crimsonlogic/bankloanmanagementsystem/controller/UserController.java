@@ -21,6 +21,11 @@ import com.crimsonlogic.bankloanmanagementsystem.dto.UserRegistrationDTO;
 import com.crimsonlogic.bankloanmanagementsystem.entity.User;
 import com.crimsonlogic.bankloanmanagementsystem.service.UserService;
 
+/*
+ * @author Preetham
+ * 
+*/
+
 @RestController
 @RequestMapping("/api/user")
 @CrossOrigin(origins = "http://localhost:3000/", allowCredentials = "true")

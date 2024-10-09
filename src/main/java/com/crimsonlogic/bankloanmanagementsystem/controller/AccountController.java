@@ -1,10 +1,8 @@
 package com.crimsonlogic.bankloanmanagementsystem.controller;
 
 import com.crimsonlogic.bankloanmanagementsystem.entity.Account;
-import com.crimsonlogic.bankloanmanagementsystem.entity.Address;
 import com.crimsonlogic.bankloanmanagementsystem.entity.User;
 import com.crimsonlogic.bankloanmanagementsystem.service.AccountService;
-import com.crimsonlogic.bankloanmanagementsystem.service.AddressService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -14,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/*
+ * @author Preetham
+*/
 @CrossOrigin(origins = "http://localhost:3000/", allowCredentials = "true") // adjust the React frontend URL
 @RestController
 @RequestMapping("/api/account")
@@ -34,9 +35,9 @@ public class AccountController {
         List<Account> accounts = accountService.getAccountsByUser(userId);
 
         if (accounts != null && !accounts.isEmpty()) {
-            return ResponseEntity.ok(accounts); // Return the accounts if found
+            return ResponseEntity.ok(accounts); 
         } else {
-            return ResponseEntity.notFound().build(); // Return 404 if no accounts found
+            return ResponseEntity.notFound().build();
         }
     }
     

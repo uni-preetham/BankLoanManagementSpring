@@ -25,6 +25,11 @@ import com.crimsonlogic.bankloanmanagementsystem.service.ManagerService;
 
 import jakarta.servlet.http.HttpSession;
 
+/*
+ * @author Preetham
+ * 
+*/
+
 @CrossOrigin(origins = "http://localhost:3000/", allowCredentials = "true", allowedHeaders = "*") // adjust the React frontend URL
 @RestController
 @RequestMapping("/api/manager")

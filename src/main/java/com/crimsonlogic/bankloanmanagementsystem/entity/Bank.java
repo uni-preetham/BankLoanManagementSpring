@@ -29,10 +29,10 @@ public class Bank {
     @Column(nullable = false, unique = true)
     private String bankName;
 
-    @Column
+    @Column(length=200)
     private String branchAddress;
 
-    @Column
+    @Column(length=10)
     private String contactNumber;
     
     @OneToMany(mappedBy = "bank", fetch = FetchType.EAGER)

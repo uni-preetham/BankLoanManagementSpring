@@ -29,6 +29,11 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
 
+/*
+ * @author Preetham
+ * 
+*/
+
 @CrossOrigin(origins = "http://localhost:3000/", allowCredentials = "true") // adjust the React frontend URL
 @RestController
 @RequestMapping("/api/loan-requests")

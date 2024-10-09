@@ -16,6 +16,11 @@ import com.crimsonlogic.bankloanmanagementsystem.service.UserService;
 import com.crimsonlogic.bankloanmanagementsystem.service.ManagerService;
 import com.crimsonlogic.bankloanmanagementsystem.service.BankService;
 
+/*
+ * @author Preetham
+ * 
+*/
+
 @RestController
 @RequestMapping("/api/login")
 @CrossOrigin(origins = "http://localhost:3000/", allowCredentials = "true") // adjust the React frontend URL

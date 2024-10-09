@@ -5,7 +5,6 @@ import com.crimsonlogic.bankloanmanagementsystem.dto.LoanRequestDTO;
 import com.crimsonlogic.bankloanmanagementsystem.dto.RevenueDTO;
 import com.crimsonlogic.bankloanmanagementsystem.entity.Bank;
 import com.crimsonlogic.bankloanmanagementsystem.entity.LoanRequest;
-import com.crimsonlogic.bankloanmanagementsystem.exception.ResourceNotFoundException;
 import com.crimsonlogic.bankloanmanagementsystem.service.BankService;
 import com.crimsonlogic.bankloanmanagementsystem.service.LoanRequestService;
 import com.crimsonlogic.bankloanmanagementsystem.service.PaymentDetailService;
@@ -25,6 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/*
+ * @author Preetham
+*/
 @CrossOrigin(origins = "http://localhost:3000/", allowCredentials = "true")
 @RestController
 @RequestMapping("/api/banks")

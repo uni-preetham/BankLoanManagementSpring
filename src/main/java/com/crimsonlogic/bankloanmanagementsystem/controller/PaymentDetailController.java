@@ -7,6 +7,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/*
+ * @author Preetham
+ * 
+*/
+
 @CrossOrigin(origins = "http://localhost:3000/", allowCredentials = "true")
 @RestController
 @RequestMapping("/api/payments")

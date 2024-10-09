@@ -11,6 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
+/*
+ * @author Preetham
+*/
 @CrossOrigin(origins = "http://localhost:3000/", allowCredentials = "true") // adjust the React frontend URL
 @RestController
 @RequestMapping("/api/address")
